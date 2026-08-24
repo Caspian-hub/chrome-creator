@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](#环境要求)
 
-一款跨平台桌面工具，用于创建**相互独立**的 Google Chrome 浏览器配置。每个配置拥有独立的数据目录、书签、扩展和登录状态，可与主 Chrome 同时运行，互不影响。
+一款跨平台桌面工具，用于创建**相互独立**的 Google Chrome 浏览器配置。每个配置拥有独立的数据目录、书签、扩展和登录状态，可与主 Chrome 同时运行，互不影响。(同一 Chrome + 不同数据目录)
 
 ![应用界面](assets/界面样式.png)
 
