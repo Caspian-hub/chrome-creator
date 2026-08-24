@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.label }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            label: Windows
+            asset_name: ChromeProfileTool-Windows-x64.zip
+            archive_cmd: powershell Compress-Archive -Path ChromeProfileTool -DestinationPath ChromeProfileTool-Windows-x64.zip -Force
+          - os: macos-latest
+            label: macOS
+            asset_name: ChromeProfileTool-macOS.zip
+            archive_cmd: zip -r ChromeProfileTool-macOS.zip ChromeProfileTool
+          - os: ubuntu-latest
+            label: Linux
+            asset_name: ChromeProfileTool-Linux-x64.zip
+            archive_cmd: zip -r ChromeProfileTool-Linux-x64.zip ChromeProfileTool
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install . pyinstaller
+
+      - name: Build executable
+        run: python build.py
+
+      - name: Create archive
+        run: ${{ matrix.archive_cmd }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: ${{ matrix.asset_name }}
+
+  release:
+    name: Publish Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: release-assets/*

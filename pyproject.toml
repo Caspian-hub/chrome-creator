@@ -1,0 +1,24 @@
+[project]
+name = "chrome-creator"
+version = "0.1.0"
+description = "帮你在一台电脑上创建多个「独立 Chrome」：像装了多个浏览器一样，每个都有自己单独的书签、登录账号、扩展和历史记录，互不影响，可同时打开。支持 Windows、macOS、Linux。"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Chrome Profile Creator Contributors" }]
+dependencies = [
+    "customtkinter>=6.0.0",
+    "pillow>=12.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Caspian-hub/chrome-creator"
+Repository = "https://github.com/Caspian-hub/chrome-creator"
+Issues = "https://github.com/Caspian-hub/chrome-creator/issues"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["core", "ui"]
